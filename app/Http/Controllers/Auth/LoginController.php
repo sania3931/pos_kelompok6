@@ -28,6 +28,7 @@ class LoginController extends Controller
     public function indexLogin(){
         return view('auth.login');
     }
+
     public function authenticate(Request $request)
     {
         $credentials = $request->validate([
@@ -35,13 +36,10 @@ class LoginController extends Controller
             'password' => ['required'],
         ]);
 
-        dd(Auth::user());
-        
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-
             if (auth()->user()->level == 'administrator' || auth()->user()->level == 'super admin') {
-                return redirect()->intended('/dashboard');
+                return redirect()->route('dashboard');
             }
 
         }

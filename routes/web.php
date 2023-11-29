@@ -39,7 +39,7 @@ Route::resource('/users', UserController::class);
 // });
 Route::get('/dashboard', function () {
     return view('templates.admin.main');
-});
+})->name('dashboard');
 // Route::middleware('auth')->group(function () {
 //     Route::get('/dashboard', function () {
 //         return view('templates.admin.main');

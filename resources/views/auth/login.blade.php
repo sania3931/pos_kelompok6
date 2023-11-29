@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -24,8 +25,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet">
     <!-- End Layout styles -->
     <link rel="shortcut icon" href="{{ asset('') }}">
-    <link href="{{ asset('admin/assets/css/theme.css')}}" rel="stylesheet" media="all">
+    <link href="{{ asset('admin/assets/css/theme.css') }}" rel="stylesheet" media="all">
 </head>
+
 <body>
     <div class="container-scroller">
         <div class="container-fluid page-body-wrapper full-page-wrapper">
@@ -33,19 +35,20 @@
                 <div class="row w-100">
                     <div class="col-lg-4 mx-auto">
                         @if (session('error'))
-                                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                                {{ session('error') }}
-                                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                        @endif
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                {{ session('error') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            </div>
+                        @endif
                         <div class="auto-form-wrapper">
-                            <form action="/authenticate" method="POST">
+                            <form action="{{ route('authenticate') }}" method="POST">
                                 @csrf
                                 <div class="form-group">
                                     <label class="label">Username</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" name="username" placeholder="Username">
+                                        <input type="text" class="form-control" name="username"
+                                            placeholder="Username">
                                         <div class="input-group-append">
                                             <span class="input-group-text">
                                                 <i class="mdi mdi-check-circle-outline"></i>
@@ -56,7 +59,8 @@
                                 <div class="form-group">
                                     <label class="label">Password</label>
                                     <div class="input-group">
-                                        <input type="password" class="form-control" name="password" placeholder="*********">
+                                        <input type="password" class="form-control" name="password"
+                                            placeholder="*********">
                                         <div class="input-group-append">
                                             <span class="input-group-text">
                                                 <i class="mdi mdi-check-circle-outline"></i>
