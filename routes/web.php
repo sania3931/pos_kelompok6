@@ -3,6 +3,8 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Front\HomeController;
+use App\Http\Controllers\HomeController as ControllersHomeController;
+use App\Http\Controllers\SuperAdmin\UserController;
 use Faker\Guesser\Name;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -26,20 +28,26 @@ Route::get('/login', [LoginController::class, 'indexLogin'])->name('login')->mid
 Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('authenticate');
 // Route::group(['middleware'=> ['auth']], function(){
 Route::get('/reload-captcha', [RegisterController::class, 'reloadCaptcha']);
-Route::post('/logout', [LoginController::class, 'logout']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::resource('/users', UserController::class);
 
-// Route::middleware(['auth', 'Checklevel:super admin'])->group(function() {
-//     Route::prefix('super admin')->group(function() {
-//     });
-// });
-// Route::middleware(['auth', 'Checklevel:administrator'])->group(function() {
-//     Route::prefix('administrator')->name('administrator.')->group(function() {
-//     });
-// });
-Route::get('/dashboard', function () {
-    return view('templates.admin.main');
-})->name('dashboard');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', [ControllersHomeController::class, 'index'])->name('home');
+    Route::middleware(['superadmin'])->group(function() {
+        Route::prefix('super-admin')->group(function() {
+            Route::get('/dashboard', function () {
+                return view('templates.admin.main');
+            })->name('superadmin_dashboard');
+        });
+    });
+    Route::middleware(['administrator'])->group(function() {
+        Route::prefix('administrator')->group(function() {
+            Route::get('/dashboard', function () {
+                return view('templates.admin.main');
+            })->name('admin_dashboard');
+        });
+    });
+});
 // Route::middleware('auth')->group(function () {
 //     Route::get('/dashboard', function () {
 //         return view('templates.admin.main');

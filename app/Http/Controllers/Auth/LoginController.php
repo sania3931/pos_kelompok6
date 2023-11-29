@@ -39,7 +39,7 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             if (auth()->user()->level == 'administrator' || auth()->user()->level == 'super admin') {
-                return redirect()->route('dashboard');
+                return redirect()->route('home');
             }
 
         }

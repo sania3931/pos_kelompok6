@@ -25,7 +25,7 @@ class CreateBarangTable extends Migration
         });
 
         Schema::table('barang', function (Blueprint $table) {
-            $table->foreign('kategori_id_kategori', 'kategori_id_kategori_fk_kategori')->references('id_kategori')->on('kategori')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('kategori_id_kategori', 'kategori_id_kategori_fk_barang')->references('id_kategori')->on('kategori')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

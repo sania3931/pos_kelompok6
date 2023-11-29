@@ -22,10 +22,11 @@ class CreateTrPenjualanTable extends Migration
             $table->integer('sub_total');
             $table->timestamps();
         });
-        // Schema::table('tr_penjualan', function (Blueprint $table) {
-        //     $table->foreign('barang_id_barang', 'barang_id_barang_fk_barang')->references('id_barang')->on('barang')->onUpdate('cascade')->onDelete('cascade');
-        //     $table->foreign('pembelian_id_pembelian', 'pembelian_id_pembelian_fk_pembelian')->references('id_pembelian')->on('pembelian')->onUpdate('cascade')->onDelete('cascade');
-        // });
+
+        Schema::table('tr_penjualan', function (Blueprint $table) {
+            $table->foreign('barang_id_barang', 'barang_id_barang_fk_tr_penjualan')->references('id_barang')->on('barang')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('pembelian_id_pembelian', 'pembelian_id_pembelian_fk_tr_penjualan')->references('id_pembelian')->on('pembelian')->onUpdate('cascade')->onDelete('cascade');
+        });
     }
 
     /**
