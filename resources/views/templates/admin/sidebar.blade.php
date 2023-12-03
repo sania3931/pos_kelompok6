@@ -28,10 +28,10 @@
             <div class="collapse" id="kelola_akun">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">User</a>
+                        <a class="nav-link" href="{{ url('super-admin/users') }}">User</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Kategori</a>
+                        <a class="nav-link" href="{{ url('super-admin/kategori') }}">Kategori</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Barang</a>

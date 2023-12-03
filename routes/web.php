@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\HomeController as ControllersHomeController;
+use App\Http\Controllers\SuperAdmin\KategoriController;
 use App\Http\Controllers\SuperAdmin\UserController;
 use Faker\Guesser\Name;
 use Illuminate\Support\Facades\Auth;
@@ -38,6 +39,11 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/dashboard', function () {
                 return view('templates.admin.main');
             })->name('superadmin_dashboard');
+            Route::resource('/users', UserController::class);
+            Route::resource('/kategori', KategoriController::class);
+            Route::post('/users/showUser', [UserController::class,'getDataUser'])->name('showUser');
+            Route::post('/kategori/data', [KategoriController::class,'data'])->name('kategori.data');
+            Route::delete('/users/delete', [UserController::class,'delete'])->name('deleteUser');
         });
     });
     Route::middleware(['administrator'])->group(function() {

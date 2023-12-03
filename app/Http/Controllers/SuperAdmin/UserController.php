@@ -41,8 +41,7 @@ class UserController extends Controller
     {
         $data = $request->all();
         $validator = Validator::make($data, [
-            'name' => ['required', 'string', 'min:3', 'max:255'],
-            'email' => ['required', 'email', 'string', 'unique:users'],
+            'username' => ['required', 'string', 'min:3', 'max:255'],
             'password' => ['required', 'min:8'],
         ],
         [
@@ -71,109 +70,102 @@ class UserController extends Controller
         // $user->role = $request->role;
         // $user->save();
         if ($user) {
-            return redirect('admin/users')->with('success', "yourAddUserIsSuccessfully");
+            return redirect('super-admin/users')->with('success', "your Add User Is Successfully");
         } else {
-            return redirect('admin/users')->with('error', "yourAddUserIsFailed");
+            return redirect('super-admin/users')->with('error', "your Add User Is Failed");
         }
     }
-    public function getDataUser()
-    {
-        // $artikel = Artikel::with('user')->get();
-        // $total = Artikel::with('user')->get()->count();
-        // $length = intval($_REQUEST['length']);
-        $total                          = User::get()->count();
+    // public function getDataUser()
+    // {
+    //     $total                          = User::get()->count();
 
-        $length                         = intval($_REQUEST['length']);
-        $length                         = $length < 0 ? $total : $length;
-        $start                          = intval($_REQUEST['start']);
-        $draw                           = intval($_REQUEST['draw']);
+    //     $length                         = intval($_REQUEST['length']);
+    //     $length                         = $length < 0 ? $total : $length;
+    //     $start                          = intval($_REQUEST['start']);
+    //     $draw                           = intval($_REQUEST['draw']);
 
-        $search                         = $_REQUEST['search']['value'];
+    //     $search                         = $_REQUEST['search']['value'];
 
-        $output                         = array();
-        $output['data']                 = array();
+    //     $output                         = array();
+    //     $output['data']                 = array();
 
-        $end                            = $start + $length;
-        $end                            = $end > $total ? $total : $end;
+    //     $end                            = $start + $length;
+    //     $end                            = $end > $total ? $total : $end;
 
 
-        if($search != ''){
-                $query                         = User::where(function($filter) use ($search) {
-                                                $filter->orWhere('name', 'like', '%' . $search . '%');
-                                                })
-                                                ->take($length)
-                                                ->skip($start)
-                                                ->get();
-            $no = $start + 1;
-            foreach ($query as $userss) {
-                $name = $userss->name ;
-                $email = $userss->email ;
-                $level = $userss->level ;
-                $status = $userss->status ;
-                $actions = "
-                            <div class='col-12 row center'>
-                                <a href=".route('users.edit', $userss->email)." class='btn btn-success m-1 btn-sm'><i class='fas fa-edit m-1'></i>Edit</a>
-                                <a href='javascript:destroyUser(`$userss->id`)' class='btn btn-danger btn-delete btn-sm m-1'><i class='fas fa-trash m-1'></i>Delete</a>
-                            </div>
-                ";
+    //     if($search != ''){
+    //             $query                         = User::where(function($filter) use ($search) {
+    //                                             $filter->orWhere('username', 'like', '%' . $search . '%');
+    //                                             })
+    //                                             ->take($length)
+    //                                             ->skip($start)
+    //                                             ->get();
+    //         $no = $start + 1;
+    //         foreach ($query as $userss) {
+    //             $username = $userss->username ;
+    //             $level = $userss->level ;
+    //             $status = $userss->status ;
+    //             $actions = "
+    //                         <div class='col-12 row center'>
+    //                             <a href=".route('users.edit', $userss->id)." class='btn btn-success m-1 btn-sm'><i class='fas fa-edit m-1'></i>Edit</a>
+    //                             <a href='javascript:destroyUser(`$userss->id`)' class='btn btn-danger btn-delete btn-sm m-1'><i class='fas fa-trash m-1'></i>Delete</a>
+    //                         </div>
+    //             ";
 
-                $output['data'][] =
-                    array(
-                        $no,
-                        $name,
-                        $email,
-                        $level,
-                        $status,
-                        $actions,
-                    );
-                $no++;
-            }
+    //             $output['data'][] =
+    //                 array(
+    //                     $no,
+    //                     $username,
+    //                     $level,
+    //                     $status,
+    //                     $actions,
+    //                 );
+    //             $no++;
+    //         }
 
-                $rows                         = User::
-                                                where(function($filter) use ($search) {
-                                                    $filter->orWhere('name', 'like', '%' . $search . '%');
-                                                        })
-                                                        ->get();
-            $output['draw']                 = $draw;
-            $output['recordsTotal']         = $output['recordsFiltered']      = $rows->count();
-        }
-        else{
-                $query                         = User::
-                                                    take($length)
-                                                    ->skip($start)
-                                                    ->get();
+    //             $rows                         = User::
+    //                                             where(function($filter) use ($search) {
+    //                                                 $filter->orWhere('username', 'like', '%' . $search . '%');
+    //                                                     })
+    //                                                     ->get();
+    //         $output['draw']                 = $draw;
+    //         $output['recordsTotal']         = $output['recordsFiltered']      = $rows->count();
+    //     }
+    //     else{
+    //             $query                         = User::
+    //                                                 take($length)
+    //                                                 ->skip($start)
+    //                                                 ->get();
 
-            $no = $start + 1;
-            foreach ($query as $userss) {
-                $name = $userss->name ;
-                $email = $userss->email ;
-                $level = $userss->level ;
-                $status = $userss->status ;
-                $actions = "
-                            <div class='col-12 row center'>
-                                <a href=".route('users.edit', $userss->email)." class='btn btn-success m-1 btn-sm'><i class='fas fa-edit m-1'></i>Edit</a>
-                                <a href='javascript:destroyUser(`$userss->id`)' class='btn btn-danger btn-delete btn-sm m-1'><i class='fas fa-trash m-1'></i>Delete</a>
-                            </div>
-                ";
+    //         $no = $start + 1;
+    //         foreach ($query as $userss) {
+    //             $username = $userss->username ;
+    //             $level = $userss->level ;
+    //             $status = $userss->status ;
+    //             $actions = "
+    //                         <div class='col-12 row center'>
+    //                             <a href=".route('users.edit', $userss->id)." class='btn btn-success m-1 btn-sm'><i class='fas fa-edit m-1'></i>Edit</a>
+    //                             <a href='javascript:destroyUser(`$userss->id`)' class='btn btn-danger btn-delete btn-sm m-1'><i class='fas fa-trash m-1'></i>Delete</a>
+    //                         </div>
+    //             ";
 
-                $output['data'][] =
-                    array(
-                        $no,
-                        $name,
-                        $email,
-                        $level,
-                        $status,
-                        $actions,
-                    );
-                $no++;
-            }
-            $output['draw']             = $draw;
-            $output['recordsTotal']     = $total;
-            $output['recordsFiltered']  = $total;
-        }
+    //             $output['data'][] =
+    //                 array(
+    //                     $no,
+    //                     $username,
+    //                     $level,
+    //                     $status,
+    //                     $actions,
+    //                 );
+    //             $no++;
+    //         }
+    //         $output['draw']             = $draw;
+    //         $output['recordsTotal']     = $total;
+    //         $output['recordsFiltered']  = $total;
+    //     }
 
-        return response()->json($output);
-    }
+    //     return response()->json($output);
+    // }
 
     /**
      * Display the specified resource.
@@ -194,7 +186,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::where('email', $id)->first();
+        $user = User::where('id', $id)->first();
         return view('pages.admin.users.edit', compact('user'));
     }
 
@@ -209,8 +201,7 @@ class UserController extends Controller
     {
         $data = $request->all();
         $validator = Validator::make($data, [
-            'name' => ['required', 'string', 'min:3', 'max:255'],
-            'email' => ['required', 'email', 'string'],
+            'username' => ['required', 'string', 'min:3', 'max:255'],
         ],
         [
           '*.required' => '::attribute Wajib Diisi',
@@ -230,9 +221,9 @@ class UserController extends Controller
         }
         $user->update($data);
         if ($user) {
-            return redirect('admin/users')->with('success',"yourUpdateUserIsSuccessfully");
+            return redirect('super-admin/users')->with('success',"yourUpdateUserIsSuccessfully");
         } else {
-            return redirect('admin/users')->with('error', "yourUpdateUserIsFailed");
+            return redirect('super-admin/users')->with('error', "yourUpdateUserIsFailed");
         }
     }
 
@@ -244,8 +235,23 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::find($id)
-        $user->delete();
-        return response()->json($user);
+        $user = User::find($id)->delete();
+        // if ($user) {
+        //     return redirect('Admin/users')->with('success', __("alert.yourDeleteUserIsSuccessfully"));
+        // } else {
+        //     return redirect('Admin/users')->with('error', __("alert.yourDeleteUserIsFailed"));
+        // }
+        // $user = User::find($id);
+        // $user->delete();
+        // return response()->json([
+        //     'success'=> true,
+        //     'data'=> $user,
+        // ]);
+
+        if ($user) {
+            return redirect('super-admin/users')->with('success', ("your Delete User Is Successfully"));
+        } else {
+            return redirect('super-admin/users')->with('error', ("your Delete User Is Failed"));
+        }
     }
 }

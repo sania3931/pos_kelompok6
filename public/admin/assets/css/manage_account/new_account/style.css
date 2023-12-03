@@ -1,0 +1,76 @@
+.card-noborder{
+	border: 0px;
+}
+
+.b-radius{
+	border-radius: 10px;
+}
+
+.default-img{
+	border-radius: 100%;
+	object-fit: cover;
+	height: 100px;
+	width: 100px;
+	min-width: 100px;
+}
+
+.upload-btn{
+	background-color: #1c45ef;
+	color: #fff;
+	font-weight: bold;
+}
+
+.upload-btn:hover{
+	color: #fff;
+}
+
+.delete-btn{
+	border: 1px solid #1c45ef;
+	background-color: #fff;
+	color: #1c45ef;
+	font-weight: bold;
+}
+
+.delete-btn:hover{
+	color: #1c45ef;
+}
+
+.simpan-btn{
+	background-color: #1c45ef;
+	color: #fff;
+	font-weight: bold;
+}
+
+.simpan-btn:hover{
+	color: #fff;
+}
+
+.back-btn{
+	background-color: #e5e9f9;
+	color: #415af1;
+	border: 0;
+	border-radius: 5px;
+	font-size: 14px;
+	padding: 10px 10px;
+	font-weight: bold;
+}
+
+.back-btn:hover{
+	background-color: #e5e9f9;
+	color: #415af1;
+}
+
+@media (max-width: 415px){
+	.delete-btn{
+		margin-top: 5px;
+	}
+}
+
+.error-notice{
+	margin-bottom: -20px;
+}
+
+.error-notice label{
+	color: #ff6258;
+	font-size: 12px !important;
+}
