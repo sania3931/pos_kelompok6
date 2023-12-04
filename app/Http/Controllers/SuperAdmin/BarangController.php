@@ -1,9 +1,10 @@
 <?php
-
+// barangController
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Barang;
+use App\Models\Kategori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,20 +15,50 @@ class BarangController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function viewBarang()
+    public function index()
     {
-        $id_user = Auth::id();
-        // $check_access = Acces::where('user', $id_account)
-        //     ->first();
-        // if ($check_access->kelola_barang == 1) {
-        //     $products = Barang::all()
-        //         ->sortBy('kode_barang');
-        //     $supply_system = Supply_system::first();
+        $kategori = Kategori::all()->pluck('kategori', 'id_kategori');
 
-        //     return view('manage_product.barang', compact('products', 'supply_system'));
-        // } else {
-        //     return back();
-        // }
+        return view('barang.index', compact('kategori'));
+    }
+
+    public function data()
+    {
+        $barang = Barang::leftJoin('kategori', 'kategori.id_kategori', 'barang.id_kategori')
+            ->select('barang.*', 'kategori')
+            
+            ->get();
+
+        return datatables()
+            ->of($barang)
+            ->addIndexColumn()
+            ->addColumn('select_all', function ($barang) {
+                return '
+                    <input type="checkbox" name="id_barang[]" value="'. $barang->id_barang.'">
+                ';
+            })
+            ->addColumn('harga_beli', function ($barang) {
+                return format_uang($barang->harga_beli);
+            })
+            ->addColumn('harga_jual', function ($barang) {
+                return format_uang($barang->harga_jual);
+            })
+            ->addColumn('harga_grosir', function ($barang) {
+                return format_uang($barang->harga_grosir);
+            })
+            ->addColumn('stok', function ($barang) {
+                return format_uang($barang->stok);
+            })
+            ->addColumn('aksi', function ($barang) {
+                return '
+                <div class="btn-group">
+                    <button type="button" onclick="editForm(`'. route('barang.update', $barang->id_barang) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
+                    <button type="button" onclick="deleteData(`'. route('barang.destroy', $barang->id_barang) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                </div>
+                ';
+            })
+            ->rawColumns(['aksi', 'select_all'])
+            ->make(true);
     }
 
     /**
@@ -48,7 +79,11 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $barang = Barang::latest()->first() ?? new Barang();
+
+        $barang = Barang::create($request->all());
+
+        return response()->json('Data berhasil disimpan', 200);
     }
 
     /**
@@ -59,7 +94,9 @@ class BarangController extends Controller
      */
     public function show($id)
     {
-        //
+        $barang = Barang::find($id);
+
+        return response()->json($barang);
     }
 
     /**
@@ -82,7 +119,10 @@ class BarangController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $barang = Barang::find($id);
+        $barang->update($request->all());
+
+        return response()->json('Data berhasil disimpan', 200);
     }
 
     /**
@@ -93,6 +133,33 @@ class BarangController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $barang = Barang::find($id);
+        $barang->delete();
+
+        return response(null, 204);
+    }
+
+    public function deleteSelected(Request $request)
+    {
+        foreach ($request->id_barang as $id) {
+            $barang = Barang::find($id);
+            $barang->delete();
+        }
+
+        return response(null, 204);
+    }
+
+    public function cetakBarcode(Request $request)
+    {
+        $databarang = array();
+        foreach ($request->id_barang as $id) {
+            $barang = Barang::find($id);
+            $databarang[] = $barang;
+        }
+
+        $no  = 1;
+        $pdf = PDF::loadView('barang.barcode', compact('databarang', 'no'));
+        $pdf->setPaper('a4', 'potrait');
+        return $pdf->stream('barang.pdf');
     }
 }
