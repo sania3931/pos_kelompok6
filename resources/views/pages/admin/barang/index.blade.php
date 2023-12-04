@@ -1,6 +1,6 @@
 @extends('templates.admin.main')
 @section('content')
-<!-- index.blade.php -->
+<!-- index.blade -->
 <div class="row">
     <div class="col-lg-12">
         <div class="box">
