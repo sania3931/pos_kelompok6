@@ -1,5 +1,5 @@
 <?php
-
+// barangController
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
