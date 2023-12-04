@@ -35,7 +35,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('super-admin/barang') }}">Barang</a>
-                        <!-- barang -->
+                        <!-- Barang -->
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Suplier</a>
