@@ -4,6 +4,7 @@ namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Barang;
+use App\Models\Kategori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,20 +15,10 @@ class BarangController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function viewBarang()
+    public function index()
     {
-        $id_user = Auth::id();
-        // $check_access = Acces::where('user', $id_account)
-        //     ->first();
-        // if ($check_access->kelola_barang == 1) {
-        //     $products = Barang::all()
-        //         ->sortBy('kode_barang');
-        //     $supply_system = Supply_system::first();
-
-        //     return view('manage_product.barang', compact('products', 'supply_system'));
-        // } else {
-        //     return back();
-        // }
+        $barang = Barang::all();
+        return view('pages.admin.barang.index', compact('barang'));
     }
 
     /**
@@ -37,7 +28,8 @@ class BarangController extends Controller
      */
     public function create()
     {
-        //
+        $kategori = Kategori::all();
+        return view('pages.admin.barang.create', compact('kategori'));
     }
 
     /**
@@ -93,6 +85,11 @@ class BarangController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $kategori = Barang::find($id);
+        $kategori->delete();
+
+        return redirect()
+            ->route('barang.index')
+            ->with('success', 'Sukses! 1 Data Berhasil Dihapus');
     }
 }

@@ -3,29 +3,87 @@
     <div class="row page-title-header">
         <div class="col-12">
             <div class="page-header d-flex justify-content-between align-items-center">
-                <h4 class="page-title mt-3">Daftar Kategori</h4>
+                <h4 class="page-title">Daftar Kategori</h4>
             </div>
             <div class="row m-t-30">
                 <div class="col-md-12">
                     <!-- DATA TABLE-->
-                    <div class="col-lg-12">
-                        <div class="box">
-                            <div class="box-header with-border">
-                                <button onclick="addForm('{{ route('kategori.store') }}')"
-                                    class="btn btn-primary  btn-flat mb-3"><i class="fas fa-plus-circle"></i>
-                                    Tambah</button>
-                            </div>
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="box-body table-responsive">
-                                        <table class="table table-stiped table-bordered">
-                                            <thead>
-                                                <th width="5%">No</th>
-                                                <th>Kategori</th>
-                                                <th>Aksi</th>
-                                                <th width="15%"><i class="fa fa-cog"></i></th>
-                                            </thead>
-                                        </table>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createDataModal">
+                        Tambah
+                    </button>
+                    <div class="main">
+                        <div class="content-wrapper">
+                            <div class="row">
+                                <div class="col-12 grid-margin">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            {{-- Alert --}}
+                                            @if (session('success'))
+                                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                    {{ session('success') }}
+                                                    <button type="button" class="btn-close" data-coreui-dismiss="alert"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                            @endif
+                                            @if ($errors->any())
+                                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                    <ul>
+                                                        @foreach ($errors->all() as $error)
+                                                            <li>{{ $error }}</li>
+                                                        @endforeach
+                                                    </ul>
+                                                    <button type="button" class="btn-close" data-coreui-dismiss="alert"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                            @endif
+                                            {{-- List Data --}}
+                                            <table class="table table-sm table-hover table-bordered rounded overflow-hidden"
+                                                id="table" style="width:100%">
+                                                <thead class="table-secondary">
+                                                    <tr>
+                                                        <th class="text-center col-1">No</th>
+                                                        <th class="text-center">Nama Kategori</th>
+                                                        <th class="text-center col-1">Aksi</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @if ($kategori->count())
+                                                        @foreach ($kategori as $row)
+                                                            <tr class="text-center">
+                                                                <td>{{ $loop->index + 1 }}</td>
+                                                                <td>{{ $row->kategori }}</td>
+                                                                <td>
+                                                                    <form
+                                                                        action="{{ route('kategori.destroy', $row->id_kategori) }}"
+                                                                        method="POST">
+                                                                        @csrf
+                                                                        @method('delete')
+                                                                        <div class="btn-group" role="group">
+                                                                            <a href="{{ route('kategori.edit', $row->id_kategori) }}"
+                                                                                class="btn btn-sm btn-primary d-flex align-items-center">
+                                                                                <i class="cil-pencil me-1"></i> Ubah
+                                                                            </a>
+                                                                            <button type="submit"
+                                                                                class="btn btn-sm btn-danger text-white d-flex align-items-center"
+                                                                                onclick="return confirm('Apakah Anda yakin menghapus data ini?');">
+                                                                                <i class="cil-trash me-1"></i> Hapus
+                                                                            </button>
+                                                                        </div>
+                                                                    </form>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @else
+                                                        <tr class="text-center">
+                                                            <td colspan="3">Tidak Ada Data</td>
+                                                            <td class="d-none"></td>
+                                                            <td class="d-none"></td>
+                                                        </tr>
+                                                    @endif
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -35,95 +93,47 @@
             </div>
         </div>
     </div>
-    @includeIf('pages\admin.kategori.form')
+    <!-- Modal -->
+    <form action="{{ route('kategori.store') }}" method="POST">
+        @csrf
+        <div class="modal fade" id="createDataModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Kategori</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="kategori" class="form-label">Nama Kategori</label>
+                            <input type="text" class="form-control" id="kategori" name="kategori" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url('super-admin/kategori') }}" class="btn btn-danger btn-sm">
+                            <i class="fa fa-ban"></i> Batal
+                        </a>
+                        <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 @endsection
+
 @section('script')
     <script>
-        let table;
-        $(function() {
-            table = $('.table').DataTable({
-                processing: true,
-                autoWidth: false,
-                ajax: {
-                    url: '{{ route('kategori.data') }}',
-                },
-
-                columns: [{
-                        data: 'DT_RowIndex',
-                        searchable: false,
-                        sortable: false
-                    },
-                    {
-                        data: 'kategori'
-                    },
-                    {
-                        data: 'aksi',
-                        searchable: false,
-                        sortable: false
-                    },
-                ],
-                bSort: false,
-                paginate: true
-            });
-
-            $('#modal-form').validator().on('submit', function(e) {
-                if (!e.preventDefault()) {
-                    $.post($('#modal-form form').attr('action'), $('#modal-form form').serialize())
-                        .done((response) => {
-                            $('#modal-form').modal('hide');
-                            table.ajax.reload();
-                        })
-                        .fail((errors) => {
-                            alert('Tidak dapat menyimpan data');
-                            return;
-                        });
-                }
+        $(document).ready(function() {
+            var table = $("#table").DataTable({
+                columnDefs: [{
+                    searchable: false,
+                    orderable: false,
+                    targets: 0
+                }],
+                responsive: true,
             });
         });
-
-        function addForm(url) {
-            $('#modal-form').modal('show');
-            $('#modal-form .modal-title').text('Tambah Kategori');
-
-            $('#modal-form form')[0].reset();
-            $('#modal-form form').attr('action', url);
-            $('#modal-form [name=_method]').val('post');
-            $('#modal-form [name=kategori]').focus();
-        }
-
-        function editForm(url) {
-            $('#modal-form').modal('show');
-            $('#modal-form .modal-title').text('Edit Kategori');
-
-            $('#modal-form form')[0].reset();
-            $('#modal-form form').attr('action', url);
-            $('#modal-form [name=_method]').val('put');
-            $('#modal-form [name=kategori]').focus();
-
-            $.get(url)
-                .done((response) => {
-                    $('#modal-form [name=kategori]').val(response.nama_kategori);
-                })
-                .fail((errors) => {
-                    alert('Tidak dapat menampilkan data');
-                    return;
-                });
-        }
-
-        function deleteData(url) {
-            if (confirm('Yakin ingin menghapus data terpilih?')) {
-                $.post(url, {
-                        '_token': $('[name=csrf-token]').attr('content'),
-                        '_method': 'delete'
-                    })
-                    .done((response) => {
-                        table.ajax.reload();
-                    })
-                    .fail((errors) => {
-                        alert('Tidak dapat menghapus data');
-                        return;
-                    });
-            }
-        }
     </script>
 @endsection

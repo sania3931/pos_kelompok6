@@ -8,14 +8,28 @@
             <div class="row m-t-30">
                 <div class="col-md-12">
                     <!-- DATA TABLE-->
-                    <a href="{{ url('super-admin/users/create') }}" type="button" class="btn btn-primary mb-3">Tambah</a>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalTambahData">
+                        Tambah
+                    </button>
                     <div class="main">
                         <div class="content-wrapper">
                             <div class="row">
                                 <div class="col-12 grid-margin">
                                     <div class="card">
                                         <div class="card-body">
-                                            <table class="table table-striped table-bordered" id="user" width="100%" cellspacing="0">
+                                            @if(session()->has('success'))
+                                                <div class="alert alert-success">
+                                                    {{ session()->get('success') }}
+                                                </div>
+                                            @endif
+                                            @if ($errors->any())
+                                                @foreach ($errors->all() as $error)
+                                                    <div>{{$error}}</div>
+                                                @endforeach
+                                            @endif
+                                            <table class="table table-sm table-hover table-bordered rounded overflow-hidden"
+                                                id="table" style="width:100%">
                                                 <thead>
                                                     <tr>
                                                         <th scope="col">No</th>
@@ -33,16 +47,22 @@
                                                             <td>{{ $userss->level }}</td>
                                                             <td>{{ $userss->status }}</td>
                                                             <td>
-                                                                <button type="button" action="{{ url('super-admin/users/'. $userss->id )}}" class="btn btn-success btn-sm mb-1 btn-edit" data-id="{{$userss->id}}">Edit</button>
-                                                                <form id="form-delete-{{ $userss->id }}" method="post"
-                                                                    {{-- action="{{ route('users.destroy'. $userss->id)}}"> --}}
-                                                                    {{-- <a href="{{ url('super-admin/users/'. $userss->id) }}"
-                                                                        class="btn btn-success btn-sm">Edit</a> --}}
+                                                                <form
+                                                                    action="{{ route('users.destroy', $userss->id_user) }}"
+                                                                    method="POST">
                                                                     @csrf
                                                                     @method('delete')
-                                                                    <button type="button" class="btn-delete btn btn-danger btn-sm "
-                                                                        value="{{ $userss->id }}">Hapus</button>
-
+                                                                    <div class="btn-group" role="group">
+                                                                        <a href="{{ route('users.edit', $userss->id_user) }}"
+                                                                            class="btn btn-sm btn-primary d-flex align-items-center">
+                                                                            <i class="cil-pencil me-1"></i> Ubah
+                                                                        </a>
+                                                                        <button type="submit"
+                                                                            class="btn btn-sm btn-danger text-white d-flex align-items-center"
+                                                                            onclick="return confirm('Apakah Anda yakin menghapus data ini?');">
+                                                                            <i class="cil-trash me-1"></i> Hapus
+                                                                        </button>
+                                                                    </div>
                                                                 </form>
                                                                 {{-- <button class="btn btn-danger">Delete</button> --}}
                                                             </td>
@@ -60,9 +80,96 @@
             </div>
         </div>
     </div>
+    <!-- Modal -->
+    <form action="{{ url('super-admin/users') }}" method="post" name="create_form"
+                    enctype="multipart/form-data">
+                    @method('post')
+                    @csrf
+        <div class="modal fade" id="modalTambahData" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Pengguna</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group row">
+                        <label class="col-12 font-weight-bold col-form-label">Username <span
+                                class="text-danger">*</span></label>
+                        <div class="col-12">
+                            <input type="text" class="form-control" name="username" placeholder="Masukkan Username">
+                        </div>
+                        <div class="col-12 error-notice" id="nama_error"></div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-12 font-weight-bold col-form-label">Password <span
+                                class="text-danger">*</span></label>
+                        <div class="col-12">
+                            <input type="password" class="form-control" name="password" placeholder="Masukkan Password">
+                        </div>
+                        <div class="col-12 error-notice" id="password_error"></div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-12 font-weight-bold col-form-label">Level <span
+                                class="text-danger">*</span></label>
+                        <div class="col-12">
+                            <select class="form-control" name="level">
+                                <option value="super admin">Super Admin</option>
+                                <option value="administrator">Administrator</option>
+                            </select>
+                        </div>
+                        <div class="col-12 error-notice" id="level_error"></div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-12 font-weight-bold col-form-label">Status <span
+                                class="text-danger">*</span></label>
+                        <div class="col-12">
+                            <select class="form-control" name="status">
+                                <option value="aktif">Aktif</option>
+                                <option value="tidak aktif">Tidak Aktif</option>
+                            </select>
+                        </div>
+                        <div class="col-12 error-notice" id="status_error"></div>
+                    </div>
+                    {{-- <div class="row mt-5">
+                        <div class="col-12 d-flex justify-content-end">
+                            <button class="btn simpan-btn btn-sm" type="submit"><i class="mdi mdi-content-save"></i>
+                                Simpan</button>
+                            <a href="{{ url('super-admin/users') }}" class="btn btn-danger btn-sm">
+                                <i class="fa fa-ban"></i> Batal
+                            </a>
+                        </div>
+                    </div> --}}
+
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </form>
+
+
 @endsection
 @section('script')
     <script>
+        $(document).ready(function() {
+            var table = $("#table").DataTable({
+                columnDefs: [{
+                    searchable: false,
+                    orderable: false,
+                    targets: 0
+                }],
+                responsive: true,
+            });
+        });
+    </script>
+    {{-- <script>
         $(document).ready(function() {
             var table = $('#user').DataTable({
                 processing: true,
@@ -126,7 +233,7 @@
             }
         })
         };
-    </script>
+    </script> --}}
 @endsection
 
 {{-- @extends('templates.admin.main')

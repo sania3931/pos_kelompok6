@@ -29,7 +29,6 @@
                                     class="text-danger">*</span></label>
                             <div class="col-12">
                                 <select class="form-control" name="level">
-                                    <option value="">-- Pilih Level --</option>
                                     <option value="super admin">Super Admin</option>
                                     <option value="administrator">Administrator</option>
                                 </select>

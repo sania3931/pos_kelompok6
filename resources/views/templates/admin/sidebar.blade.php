@@ -3,12 +3,12 @@
         <li class="nav-item nav-profile">
             <a href="#" class="nav-link">
                 <div class="profile-image">
-                    <img class="img-xs rounded-circle" src="assets/images/faces/face8.jpg" alt="profile image">
+                    <img class="img-xs rounded-circle" src="{{ asset('img/profile.png') }}" alt="profile image">
                     <div class="dot-indicator bg-success"></div>
                 </div>
                 <div class="text-wrapper">
-                    <p class="profile-name">Allen Moreno</p>
-                    <p class="designation">Premium user</p>
+                    <p class="profile-name">{{ auth()->user()->username }}</p>
+                    <p class="designation">{{ auth()->user()->level }}</p>
                 </div>
             </a>
         </li>
@@ -20,26 +20,27 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#kelola_akun" aria-expanded="false"
-                aria-controls="master">
+            <a class="nav-link" data-toggle="collapse" href="#kelola_akun" aria-expanded="false" aria-controls="master">
                 <span class="menu-title">Master Data</span>
                 <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="kelola_akun">
-                <ul class="nav flex-column sub-menu">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('super-admin/users') }}">User</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('super-admin/kategori') }}">Kategori</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Barang</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Suplier</a>
-                    </li>
-                </ul>
+                @if (Auth::user()->level == 'super admin')
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('super-admin/users') }}">User</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('super-admin/kategori') }}">Kategori</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Suplier</a>
+                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('super-admin/barang') }}">Barang</a>
+                            </li>
+                    </ul>
+                @endif
             </div>
         </li>
         {{-- <li class="nav-item">
@@ -108,12 +109,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">Penjualan</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Retur</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Terima</a>
-                    </li>
                 </ul>
             </div>
         </li>
@@ -121,12 +116,6 @@
             <a class="nav-link" href="pages/tables/basic-table.html">
                 <i class="menu-icon typcn typcn-bell"></i>
                 <span class="menu-title">Laporan</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="pages/tables/basic-table.html">
-                <i class="menu-icon typcn typcn-bell"></i>
-                <span class="menu-title">Logout</span>
             </a>
         </li>
     </ul>
