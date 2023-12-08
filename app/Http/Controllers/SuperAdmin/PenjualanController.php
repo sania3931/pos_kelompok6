@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Barang;
+use App\Models\Penjualan;
+use App\Models\Tr_Penjualan;
 use Illuminate\Http\Request;
 
 class PenjualanController extends Controller
@@ -24,7 +27,15 @@ class PenjualanController extends Controller
      */
     public function create()
     {
-        //
+        $penjualan = new Penjualan();
+        $penjualan->tgl_penjualan;
+        $penjualan->tgl_input;
+        $penjualan->total = 0;
+        $penjualan->id_user = auth()->id();
+        $penjualan->save();
+
+        session(['id_penjualan' => $penjualan->id_penjualan]);
+        return redirect()->route('penjualan.index');
     }
 
     /**
@@ -35,7 +46,20 @@ class PenjualanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $penjualan = Penjualan::findOrFail($request->id_penjualan);
+        $penjualan->tgl_penjualan = $request->tgl_penjualan;
+        $penjualan->tgl_input = $request->tgl_input;
+        $penjualan->total = $request->total;
+        $penjualan->update();
+
+        $detail = Tr_Penjualan::where('id_penjualan', $penjualan->id_penjualan)->get();
+        foreach ($detail as $item) {
+            $barang = Barang::find($item->id_barang);
+            $barang->stok -= $item->total;
+            $barang->update();
+        }
+
+        return redirect()->route('penjualan.selesai');
     }
 
     /**

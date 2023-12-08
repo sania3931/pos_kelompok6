@@ -34,7 +34,7 @@
                             <a class="nav-link" href="{{ url('super-admin/kategori') }}">Kategori</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Suplier</a>
+                            <a class="nav-link" href="{{ url('super-admin/suplier') }}">Suplier</a>
                         </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url('super-admin/barang') }}">Barang</a>

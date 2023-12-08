@@ -3,14 +3,14 @@
     <div class="row page-title-header">
         <div class="col-12">
             <div class="page-header d-flex justify-content-between align-items-center">
-                <h4 class="page-title">Daftar Barang</h4>
+                <h4 class="page-title">Daftar Penjualan</h4>
             </div>
             <div class="row m-t-30">
                 <div class="col-md-12">
                     <!-- DATA TABLE-->
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createDataModal">
-                        Tambah
+                        Tambah <i class="fa fa-plus-circle" aria-hidden="true"></i>
                     </button>
                     <div class="main">
                         <div class="content-wrapper">
@@ -43,39 +43,37 @@
                                                 <thead class="table-secondary">
                                                     <tr>
                                                         <th class="text-center col-1">No</th>
-                                                        <th class="text-center">Kategori</th>
-                                                        <th class="text-center">Nama Barang</th>
-                                                        <th class="text-center">Harga Beli</th>
-                                                        <th class="text-center">Harga Jual</th>
-                                                        <th class="text-center">Stok</th>
+                                                        <th class="text-center">Tanggal Penjualan</th>
+                                                        <th class="text-center">Tanggal Input</th>
+                                                        <th class="text-center">Total Harga</th>
+                                                        <th class="text-center">Kasir</th>
                                                         <th class="text-center col-1">Aksi</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @if ($barang->count())
-                                                        @foreach ($barang as $row)
+                                                    @if ($kategori->count())
+                                                        @foreach ($pembelian as $row)
                                                             <tr class="text-center">
                                                                 <td>{{ $loop->index + 1 }}</td>
-                                                                <td>{{ $row->kategori_id_kategori }}</td>
-                                                                <td>{{ $row->nama_barang }}</td>
-                                                                <td>{{ $row->harga_beli }}</td>
-                                                                <td>{{ $row->harga_jual }}</td>
-                                                                <td>{{ $row->stok }}</td>
+                                                                <td>{{ $row->tgl_penjualan }}</td>
+                                                                <td>{{ $row->tgl_input }}</td>
+                                                                <td>{{ $row->total }}</td>
+                                                                <td>{{ $row->id_user }}</td>
                                                                 <td>
                                                                     <form
-                                                                        action="{{ route('barang.destroy', $row->id_barang) }}"
+                                                                        action="{{ route('penjualan.destroy', $row->id_penjualan) }}"
                                                                         method="POST">
                                                                         @csrf
                                                                         @method('delete')
                                                                         <div class="btn-group" role="group">
-                                                                            <a href="{{ route('barang.edit', $row->id_barang) }}"
-                                                                                class="btn btn-sm btn-primary d-flex align-items-center">
-                                                                                <i class="cil-pencil me-1"></i> Ubah
+                                                                            <a href="{{ route('penjualan.edit', $row->id_penjualan) }}"
+                                                                                class="btn btn-sm btn-success d-flex align-items-center">
+                                                                                <i class="fa fa-pencil" aria-hidden="true"></i>
                                                                             </a>
                                                                             <button type="submit"
                                                                                 class="btn btn-sm btn-danger text-white d-flex align-items-center"
                                                                                 onclick="return confirm('Apakah Anda yakin menghapus data ini?');">
-                                                                                <i class="cil-trash me-1"></i> Hapus
+                                                                                <i class="fa fa-times" aria-hidden="true"></i>
                                                                             </button>
                                                                         </div>
                                                                     </form>
@@ -102,65 +100,25 @@
         </div>
     </div>
     <!-- Modal -->
-    <form action="{{ route('barang.store') }}" method="POST">
+    <form action="{{ route('pembelian.store') }}" method="POST">
         @csrf
         <div class="modal fade" id="createDataModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah Barang</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Kategori</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 </div>
-
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="nama_barang" class="form-label">Nama Barang</label>
-                            <input type="text" class="form-control" id="nama_barang" name="nama_barang" placeholder="Masukkan Nama Barang" required>
+                            <label for="kategori" class="form-label">Nama Kategori</label>
+                            <input type="text" class="form-control" id="kategori" name="kategori" required>
                         </div>
                     </div>
-                    </div>
-
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="kategori_id_kategori" class="form-label">Kategori</label>
-                            <select class="form-control" name="kategori_id_kategori">
-                                <option value="Obat">Obat</option>
-                                <option value="Pupuk">Pupuk</option>
-                                <option value="Pestisida">Pestisida</option>
-                                <option value="Alat Pertanian">Alat Pertanian</option>
-                                <option value="Lainnya">Lainnya</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="harga_beli" class="form-label">Harga Beli</label>
-                            <input type="text" class="form-control" id="harga_beli" name="harga_beli" required>
-                            <span class="input-group-text">Rp. </span>
-                        </div>
-                    </div>
-
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="harga_jual" class="form-label">Harga Jual</label>
-                            <input type="text" class="form-control" id="harga_jual" name="harga_jual" required>
-                            <span class="input-group-text">Rp. </span>
-                        </div>
-                    </div>
-
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="stok" class="form-label">Stok</label>
-                            <input type="text" class="form-control" id="stok" name="stok" placeholder="Masukkan Stok Barang" required>
-                        </div>
-                    </div>
-                    </div>
-
                     <div class="modal-footer">
-                        <a href="{{ url('super-admin/barang') }}" class="btn btn-danger btn-sm">
+                        <a href="{{ url('super-admin/kategori') }}" class="btn btn-danger btn-sm">
                             <i class="fa fa-ban"></i> Batal
                         </a>
                         <button type="submit" class="btn btn-primary btn-sm">Simpan</button>

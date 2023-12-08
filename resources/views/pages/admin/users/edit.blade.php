@@ -124,16 +124,16 @@
 </form> --}}
 @extends('templates.admin.main')
 @section('content')
-<form action="{{ route('users.edit', $user->id_user) }}" method="post" enctype="multipart/form-data" name="update_form">
+    <form action="{{ route('users.update', $user->id_user) }}" method="post" enctype="multipart/form-data" name="update_form">
     @csrf
+    @method('put')
     <div class="modal-header">
-      <h5 class="modal-title" id="editModalLabel">Edit Akun</h5>
+      <h5 class="modal-title" id="#modalEditData">Edit Akun</h5>
       <button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
-      @csrf
       <div class="modal-body">
         <div class="row form-group">
             <div class="col col-md-3">
@@ -195,9 +195,96 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Save changes</button>
+        <a href="{{ url('super-admin/users') }}" class="btn btn-danger btn-sm">
+            <i class="fa fa-ban"></i> Batal
+        </a>
+        <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
     </div>
   </form>
 </div>
+    {{-- <form action="{{ url('super-admin/kategori') }}" method="post" name="create_form" enctype="multipart/form-data">
+        @method('post')
+        @csrf
+        <div class="modal fade" id="modalTambahData" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Tambah Pengguna</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label class=" form-control-label">Username</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" id="text-input" name="username" placeholder="Username"
+                                    class="form-control @error('username') is-invalid @enderror"
+                                    value="{{ $user->username }}">
+                                @error('username')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="password-input" class=" form-control-label">password</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" id="password-input" name="password" placeholder="password"
+                                    class="form-control @error('password') is-invalid @enderror">
+                                <span>*kosongkan jika tidak diubah</span>
+                                @error('password')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="select" class=" form-control-label">Level</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <select name="level" id="select"
+                                    class="form-control @error('level') is-invalid @enderror">
+                                    <option selected hidden value="{{ $user->level }}">
+                                        {{ $user->level }}
+                                    </option>
+                                    <option value="member">Super Admin</option>
+                                    <option value="admin">Administrator</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="select" class=" form-control-label">Status</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <select name="status" id="select"
+                                    class="form-control @error('status') is-invalid @enderror">
+                                    <option selected hidden value="{{ $user->status }}">
+                                        {{ $user->status }}
+                                    </option>
+                                    <option value="member">Aktif</option>
+                                    <option value="admin">Tidak Aktif</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form> --}}
 @endsection

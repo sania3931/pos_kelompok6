@@ -10,7 +10,7 @@
                     <!-- DATA TABLE-->
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createDataModal">
-                        Tambah
+                        Tambah <i class="fa fa-plus-circle" aria-hidden="true"></i>
                     </button>
                     <div class="main">
                         <div class="content-wrapper">
@@ -61,13 +61,13 @@
                                                                         @method('delete')
                                                                         <div class="btn-group" role="group">
                                                                             <a href="{{ route('kategori.edit', $row->id_kategori) }}"
-                                                                                class="btn btn-sm btn-primary d-flex align-items-center">
-                                                                                <i class="cil-pencil me-1"></i> Ubah
+                                                                                class="btn btn-sm btn-success d-flex align-items-center">
+                                                                                <i class="fa fa-pencil" aria-hidden="true"></i>
                                                                             </a>
                                                                             <button type="submit"
                                                                                 class="btn btn-sm btn-danger text-white d-flex align-items-center"
                                                                                 onclick="return confirm('Apakah Anda yakin menghapus data ini?');">
-                                                                                <i class="cil-trash me-1"></i> Hapus
+                                                                                <i class="fa fa-times" aria-hidden="true"></i>
                                                                             </button>
                                                                         </div>
                                                                     </form>

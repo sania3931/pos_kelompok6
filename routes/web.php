@@ -6,8 +6,11 @@ use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\HomeController as ControllersHomeController;
 use App\Http\Controllers\SuperAdmin\BarangController;
 use App\Http\Controllers\SuperAdmin\KategoriController;
+use App\Http\Controllers\SuperAdmin\PembelianController;
+use App\Http\Controllers\SuperAdmin\PenjualanController;
 use App\Http\Controllers\SuperAdmin\SuplierController;
 use App\Http\Controllers\SuperAdmin\UserController;
+use App\Models\Pembelian;
 use Faker\Guesser\Name;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -47,6 +50,7 @@ Route::middleware(['auth'])->group(function () {
             Route::resource('/users', UserController::class);
             Route::resource('/kategori', KategoriController::class);
             Route::resource('/barang', BarangController::class);
+            Route::resource('/penjualan', PenjualanController::class);
             Route::resource('/suplier', SuplierController::class);
             Route::post('/kategori/data', [KategoriController::class,'data'])->name('kategori.data');
             Route::post('/users/showUser', [UserController::class,'getDataUser'])->name('showUser');
@@ -58,6 +62,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/dashboard', function () {
                 return view('templates.admin.main');
             })->name('admin_dashboard');
+            Route::resource('/barang', BarangController::class);
         });
     });
 });

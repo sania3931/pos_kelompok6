@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Suplier;
 use Illuminate\Http\Request;
 
 class SuplierController extends Controller
@@ -14,7 +15,7 @@ class SuplierController extends Controller
      */
     public function index()
     {
-        //
+        return view('pages.admin.suplier.index');
     }
 
     /**
@@ -24,7 +25,7 @@ class SuplierController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.admin.suplier.create');
     }
 
     /**
@@ -35,7 +36,16 @@ class SuplierController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'nama_suplier' => 'required',
+            'alamat' => 'required',
+            'sales' => 'required',
+            'no_hp' => 'required',
+        ]);
+
+        Suplier::create($validatedData);
+
+        return redirect()->route('suplier.index')->with('success', 'Suplier created successfully.');
     }
 
     /**

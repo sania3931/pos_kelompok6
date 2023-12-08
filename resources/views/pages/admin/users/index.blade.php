@@ -10,7 +10,7 @@
                     <!-- DATA TABLE-->
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalTambahData">
-                        Tambah
+                        Tambah <i class="fa fa-plus-circle" aria-hidden="true"></i>
                     </button>
                     <div class="main">
                         <div class="content-wrapper">
@@ -52,15 +52,15 @@
                                                                     method="POST">
                                                                     @csrf
                                                                     @method('delete')
-                                                                    <div class="btn-group" role="group">
+                                                                    <div class="btn-group m-3" role="group">
                                                                         <a href="{{ route('users.edit', $userss->id_user) }}"
-                                                                            class="btn btn-sm btn-primary d-flex align-items-center">
-                                                                            <i class="cil-pencil me-1"></i> Ubah
+                                                                            class="btn btn-sm btn-success d-flex align-items-center">
+                                                                            <i class="fa fa-pencil" aria-hidden="true"></i>
                                                                         </a>
                                                                         <button type="submit"
                                                                             class="btn btn-sm btn-danger text-white d-flex align-items-center"
                                                                             onclick="return confirm('Apakah Anda yakin menghapus data ini?');">
-                                                                            <i class="cil-trash me-1"></i> Hapus
+                                                                            <i class="fa fa-times" aria-hidden="true"></i>
                                                                         </button>
                                                                     </div>
                                                                 </form>
@@ -153,7 +153,91 @@
             </div>
         </div>
     </form>
+    {{-- <form action="{{ url('super-admin/users') }}" method="post" name="create_form" enctype="multipart/form-data">
+        @method('put')
+        @csrf
+        <div class="modal fade" id="modaleditData" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Tambah Pengguna</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
 
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label class=" form-control-label">Username</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" id="text-input" name="username" placeholder="Username"
+                                    class="form-control @error('username') is-invalid @enderror"
+                                    value="{{ $user->username }}">
+                                @error('username')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="password-input" class=" form-control-label">password</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" id="password-input" name="password" placeholder="password"
+                                    class="form-control @error('password') is-invalid @enderror">
+                                <span>*kosongkan jika tidak diubah</span>
+                                @error('password')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="select" class=" form-control-label">Level</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <select name="level" id="select"
+                                    class="form-control @error('level') is-invalid @enderror">
+                                    <option selected hidden value="{{ $user->level }}">
+                                        {{ $user->level }}
+                                    </option>
+                                    <option value="member">Super Admin</option>
+                                    <option value="admin">Administrator</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="select" class=" form-control-label">Status</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <select name="status" id="select"
+                                    class="form-control @error('status') is-invalid @enderror">
+                                    <option selected hidden value="{{ $user->status }}">
+                                        {{ $user->status }}
+                                    </option>
+                                    <option value="member">Aktif</option>
+                                    <option value="admin">Tidak Aktif</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form> --}}
 
 @endsection
 @section('script')
